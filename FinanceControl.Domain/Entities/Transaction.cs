@@ -1,4 +1,6 @@
-﻿namespace FinanceControl.Domain.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace FinanceControl.Domain.Entities
 {
     public class Transaction
     {
@@ -10,6 +12,8 @@
         public TransactionType Type { get; set; }
 
         public int UserId { get; set; }
+
+        [JsonIgnore]
         public User User { get; set; } = null!;
 
         public int CategoryId { get; set; }

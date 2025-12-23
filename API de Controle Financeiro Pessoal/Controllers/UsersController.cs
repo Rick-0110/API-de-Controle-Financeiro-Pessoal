@@ -19,7 +19,7 @@ namespace FinanceControl.Domain.Controllers
         }
 
         [HttpGet]
-       public async Task<IActionResult> GetAll()
+       public async Task<IActionResult> GetAllAsync()
         {
             var users = await _userRepository.GetAllAsync();
             return Ok(users);
@@ -27,10 +27,21 @@ namespace FinanceControl.Domain.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Create(User user)
+        public async Task<IActionResult> AddAsync(User user)
         {
             await _userRepository.AddAsync(user);
-            return CreatedAtAction(nameof(GetAll), new { id = user.Id }, user);
+            return CreatedAtAction(nameof(GetAllAsync), new { id = user.Id }, user);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByIdAsync(int id)
+        {
+            var user = await _userRepository.GetByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
         }
 
 

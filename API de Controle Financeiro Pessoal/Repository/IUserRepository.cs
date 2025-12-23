@@ -6,5 +6,6 @@ namespace FinanceControl.Domain.Interfaces
     {
         Task AddAsync(User user);
         Task<List<User>> GetAllAsync();
+        Task<User> GetByIdAsync(int id);
     }
 }
