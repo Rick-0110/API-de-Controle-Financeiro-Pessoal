@@ -21,6 +21,7 @@ builder.Services.AddDbContext<BancoContext>(options =>
 
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
