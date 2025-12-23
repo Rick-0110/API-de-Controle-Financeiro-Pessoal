@@ -29,5 +29,12 @@ namespace FinanceControl.Infrastructure.Repository
         {
             return await _context.Users.FindAsync(id);
         }
+
+        public async Task<User?> IdCategoryAsync(int id)
+        {
+            return await _context.Users.FindAsync(id);
+        }
+
+
     }
 }

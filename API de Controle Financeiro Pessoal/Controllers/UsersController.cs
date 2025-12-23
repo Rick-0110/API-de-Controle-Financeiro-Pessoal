@@ -44,6 +44,5 @@ namespace FinanceControl.Domain.Controllers
             return Ok(user);
         }
 
-
     }
 }
