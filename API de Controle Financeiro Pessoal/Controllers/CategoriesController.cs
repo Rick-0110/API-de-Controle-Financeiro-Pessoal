@@ -1,10 +1,9 @@
 ﻿using FinanceControl.Domain.Entities;
 using FinanceControl.Domain.Interfaces;
-using FinanceControl.Infrastructure.Repository;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using FinanceControl.Infrastructure.Repository;
 
-namespace API_de_Controle_Financeiro_Pessoal.Controllers
+namespace FinanceControl.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -27,7 +26,7 @@ namespace API_de_Controle_Financeiro_Pessoal.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategoryById(int id)
         {
-            var category = await _categoriesRepository.IdCategoryAsync(id);
+            var category = await _categoriesRepository.GetCategoryById(id);
 
             if(category == null)
             {
@@ -55,7 +54,16 @@ namespace API_de_Controle_Financeiro_Pessoal.Controllers
             return Ok(updatedCategory);
         }
 
-
+        [HttpDelete]
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            var deletedCategory = await _categoriesRepository.DeleteCategoryAsync(id);
+            if(deletedCategory == null)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
 
     }
 }

@@ -1,5 +1,6 @@
 using FinanceControl.Domain.Interfaces;
 using FinanceControl.Infrastructure.Data;
+using FinanceControl.Infrastructure.Repositories;
 using FinanceControl.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 
