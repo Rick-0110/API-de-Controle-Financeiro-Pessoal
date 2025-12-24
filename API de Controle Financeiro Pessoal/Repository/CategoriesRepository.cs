@@ -38,6 +38,22 @@ namespace FinanceControl.Infrastructure.Repository
             return new OkObjectResult(categories);
         }
 
+        public async Task<IActionResult> UpdateCategoryAsync(int id, Category category)
+        {
+            var existingCategory = await _context.Categories.FindAsync(id);
+            if (existingCategory == null)
+            {
+                return new NotFoundResult();
+            }
+            existingCategory.Name = category.Name;
+            existingCategory.Description = category.Description;
+            existingCategory.UserId = category.UserId;
+            _context.Categories.Update(existingCategory);
+            await _context.SaveChangesAsync();
+            return new OkObjectResult(existingCategory);
+        }
+
+    
 
 
     }

@@ -44,6 +44,17 @@ namespace API_de_Controle_Financeiro_Pessoal.Controllers
             return Ok(categories);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateCategory(int id, Category category)
+        {
+            var updatedCategory = await _categoriesRepository.UpdateCategoryAsync(id, category);
+            if(updatedCategory == null)
+            {
+                return NotFound();
+            }
+            return Ok(updatedCategory);
+        }
+
 
 
     }

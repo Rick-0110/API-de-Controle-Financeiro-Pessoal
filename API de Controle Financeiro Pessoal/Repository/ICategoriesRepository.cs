@@ -10,6 +10,9 @@ namespace FinanceControl.Domain.Interfaces
         Task<IActionResult> CreateCategoryAsync(Category category);
         Task<IActionResult> GetAllCategoriesAsync();
         Task<IActionResult> IdCategoryAsync(int id);
-        
+        Task<IActionResult> UpdateCategoryAsync(int id, Category category);
+
+       
+
     }
 }
