@@ -1,8 +1,8 @@
 using FinanceControl.Domain.Interfaces;
 using FinanceControl.Infrastructure.Data;
 using FinanceControl.Infrastructure.Repositories;
-using FinanceControl.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +23,8 @@ builder.Services.AddDbContext<BancoContext>(options =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+builder.Services.AddScoped<ITransactionsRepository, TransactionsRepository>();
+
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.

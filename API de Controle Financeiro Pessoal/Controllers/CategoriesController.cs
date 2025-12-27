@@ -1,9 +1,9 @@
 ﻿using FinanceControl.Domain.Entities;
 using FinanceControl.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using FinanceControl.Infrastructure.Repository;
 
-namespace FinanceControl.Controllers
+
+namespace API_de_Controle_Financeiro_Pessoal.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

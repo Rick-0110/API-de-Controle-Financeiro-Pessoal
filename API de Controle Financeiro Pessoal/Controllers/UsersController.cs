@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 
 
-namespace FinanceControl.Domain.Controllers
+namespace API_de_Controle_Financeiro_Pessoal.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
