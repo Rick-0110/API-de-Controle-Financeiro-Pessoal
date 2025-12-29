@@ -3,7 +3,8 @@ using FinanceControl.Domain.Interfaces;
 using FinanceControl.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace FinanceControl.Infrastructure.Repository
+
+namespace FinanceControl.Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository
     {

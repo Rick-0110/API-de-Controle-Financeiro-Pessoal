@@ -14,5 +14,18 @@ namespace FinanceControl.Domain.Entities
 
         [JsonIgnore]
         public ICollection<Category> Categories{ get; set; } = new List<Category>();
+
+
+        public User(string name, string email, string password) 
+        {
+        if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("O nome é obrigatório!", nameof(name));
+
+        Name = name;
+        Email = email;
+        Password = password;
+
+        }
+
+        protected User() { }
     }
 }
