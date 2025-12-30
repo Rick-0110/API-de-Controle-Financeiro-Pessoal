@@ -10,9 +10,11 @@ namespace API_de_Controle_Financeiro_Pessoal.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoriesRepository _categoriesRepository;
-        public CategoriesController(ICategoriesRepository categoriesRepository)
+        private readonly IUserRepository _userRepository;
+        public CategoriesController(ICategoriesRepository categoriesRepository, IUserRepository userRepository)
         {
             _categoriesRepository = categoriesRepository;
+            _userRepository = userRepository;
         }
 
         [HttpPost]
