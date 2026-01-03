@@ -10,7 +10,7 @@ namespace FinanceControl.Domain.Entities
         public int Id { get; private set; }
 
         
-        public string Title { get; private set; }
+        public string Description { get; private set; }
 
         public decimal Amount { get; private set; }
         public DateTime Date { get; private set; } = DateTime.Now;
@@ -26,17 +26,19 @@ namespace FinanceControl.Domain.Entities
         [JsonIgnore]
         public Category? Category { get; set; } = null!;
 
-        public Transaction(string title, decimal amount, int type, int userId, int categoryId)
+        public Transaction(string description,decimal amount, DateTime date, TransactionType type, int userId, int categoryId)
         {
-            if(string.IsNullOrWhiteSpace(title)) throw new ArgumentException("O título é obrigatório!", nameof(title));
+            if(string.IsNullOrWhiteSpace(description)) throw new ArgumentException("A descrição é obrigatória!", nameof(description));
+            if(amount <= 0 ) throw new ArgumentException("O valor da transação deve ser maior que zero!", nameof(amount));
+            if(UserId <= 0) throw new ArgumentException("Usuário inválido!", nameof(userId));
+            if(categoryId <= 0) throw new ArgumentException("Categoria inválida!", nameof(categoryId));
 
-            Title = title;
+            Description = description;
             Amount = amount;
-            Type = type;
+            Date = date;
+            Type = (int)type;
             UserId = userId;
             CategoryId = categoryId;
-            Date = DateTime.Now;
-
 
         }
 

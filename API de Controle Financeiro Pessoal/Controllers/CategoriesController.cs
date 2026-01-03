@@ -1,4 +1,5 @@
-﻿using FinanceControl.Domain.Entities;
+﻿using FinanceControl.Application.Dtos;
+using FinanceControl.Domain.Entities;
 using FinanceControl.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,7 +43,14 @@ namespace API_de_Controle_Financeiro_Pessoal.Controllers
         public async Task<IActionResult> GetAllCategories()
         {
             var categories = await _categoriesRepository.GetAllCategoriesAsync();
-            return Ok(categories);
+            var response = categories.Select(c => new CategoryResponseDto
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Description = c.Description,
+                UserId = c.UserId
+            });
+            return Ok(response);
         }
 
         [HttpPut]

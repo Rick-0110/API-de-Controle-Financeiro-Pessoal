@@ -1,6 +1,7 @@
 ﻿using FinanceControl.Infrastructure.Data;
 using FinanceControl.Domain.Entities;
 using FinanceControl.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FinanceControl.Infrastructure.Repositories
 {
@@ -18,5 +19,22 @@ namespace FinanceControl.Infrastructure.Repositories
             await _context.SaveChangesAsync();
             return transaction;
         }
+
+
+        public async Task<IEnumerable<Transaction>> GetAllAsync()
+        {
+            return await _context.Transactions
+                .Include(t => t.Category)
+                .ToListAsync();
+        }
+
+        public async Task<Transaction?> GetByIdAsync(int id)
+        {
+            return await _context.Transactions
+                .Include(t => t.Category)
+                .FirstOrDefaultAsync(t => t.Id == id);
+        }
+
+     
     }
 }
