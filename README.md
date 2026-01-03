@@ -1,26 +1,39 @@
-# 💰 API de Controle Financeiro Pessoal
+# FinanceControl API 💰
 
-Projeto desenvolvido com o objetivo de estudar e aplicar conceitos avançados de desenvolvimento back-end com .NET e C#.
+A RESTful API built with **.NET 8** to help users track incomes and expenses efficiently.
 
-## 🧠 O que estou aprendendo/aplicando
-Este projeto não é apenas um CRUD, mas um exercício de arquitetura de software. Os principais conceitos aplicados foram:
+## 🚀 Technologies
 
-* **Clean Architecture:** Separação de responsabilidades em camadas (Domain, Infrastructure, API).
-* **Repository Pattern:** Desacoplamento entre a lógica de negócio e o acesso a dados.
-* **Entity Framework Core:** Uso de Migrations, Mapeamento de Entidades e Relacionamentos (One-to-Many).
-* **Injeção de Dependência:** Configuração de serviços e repositórios no container do .NET.
-* **Tratamento de Ciclos JSON:** Uso do `[JsonIgnore]` para evitar loops infinitos em relacionamentos bidirecionais.
-* **Swagger:** Documentação automática da API.
-
-## 🛠️ Tecnologias Utilizadas
-* .NET 8 (C#)
-* MySQL (Banco de Dados)
-* Entity Framework Core
+* C# .NET 8
+* Entity Framework Core (MySQL)
+* Clean Architecture
 * Swagger UI
 
-## ⚙️ Como rodar o projeto
-1. Clone o repositório.
-2. Configure a `ConnectionString` no arquivo `appsettings.json` com seu banco MySQL.
-3. Rode as migrations para criar o banco:
-   ```powershell
-   Update-Database -Project FinanceControl.Infrastructure -StartupProject "API de Controle Financeiro Pessoal"
+## ⚙️ How to Run
+
+1.  **Clone the repo**
+    ```bash
+    git clone [https://github.com/YOUR-USERNAME/FinanceControl.git](https://github.com/YOUR-USERNAME/FinanceControl.git)
+    ```
+
+2.  **Configure Database**
+    Update your connection string in `appsettings.json`.
+
+3.  **Run Migrations**
+    ```bash
+    dotnet ef database update --project FinanceControl.Infrastructure --startup-project "API de Controle Financeiro Pessoal"
+    ```
+
+4.  **Start the API**
+    ```bash
+    dotnet run --project "API de Controle Financeiro Pessoal"
+    ```
+
+## ✅ Key Features
+
+* **Transactions:** Add incomes and expenses with validation.
+* **Categories:** Organize transactions by category.
+* **Dashboard:** (Coming soon) View financial summaries.
+
+---
+Created by Henrique Matos
