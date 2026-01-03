@@ -17,17 +17,19 @@ A RESTful API built with **.NET 8** to help users track incomes and expenses eff
     ```
 
 2.  **Configure Database**
-    Update your connection string in `appsettings.json`.
+    Update your connection string in `appsettings.json` (inside the API project).
 
-3.  **Run Migrations**
-    ```bash
-    dotnet ef database update --project FinanceControl.Infrastructure --startup-project "API de Controle Financeiro Pessoal"
+3.  **Run Migrations (Visual Studio)**
+    Open **Package Manager Console** (*View > Other Windows > Package Manager Console*).
+    
+    * Set **Default project** drop-down to: `FinanceControl.Infrastructure`
+    * Run the command:
+    ```powershell
+    Update-Database
     ```
 
 4.  **Start the API**
-    ```bash
-    dotnet run --project "API de Controle Financeiro Pessoal"
-    ```
+    Press **F5** or click the **Start/Play** button in Visual Studio.
 
 ## ✅ Key Features
 
@@ -36,4 +38,4 @@ A RESTful API built with **.NET 8** to help users track incomes and expenses eff
 * **Dashboard:** (Coming soon) View financial summaries.
 
 ---
-Created by Henrique Matos
+Created by [Your Name]
