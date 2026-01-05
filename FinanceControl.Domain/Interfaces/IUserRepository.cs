@@ -1,4 +1,7 @@
 ﻿using FinanceControl.Domain.Entities;
+using System;
+using System.Collections.Generic;
+
 
 namespace FinanceControl.Domain.Interfaces
 {
@@ -6,6 +9,7 @@ namespace FinanceControl.Domain.Interfaces
     {
         Task AddAsync(User user);
         Task<List<User>> GetAllAsync();
-        Task<User> GetByIdAsync(int id);
+        Task<User?> GetByEmailAsync(string email);
+        Task<User?> GetByIdAsync(int id);
     }
 }
