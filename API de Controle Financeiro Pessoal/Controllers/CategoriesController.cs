@@ -43,6 +43,7 @@ namespace API_de_Controle_Financeiro_Pessoal.Controllers
         public async Task<IActionResult> GetAllCategories()
         {
             var categories = await _categoriesRepository.GetAllCategoriesAsync();
+
             var response = categories.Select(c => new CategoryResponseDto
             {
                 Id = c.Id,
