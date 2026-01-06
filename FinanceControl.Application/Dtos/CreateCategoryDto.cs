@@ -12,10 +12,6 @@ namespace FinanceControl.Application.Dtos
         public string Description { get; set; }
 
 
-        // TODO: [SECURITY] Remover UserId do DTO após implementar Autenticação JWT.
-        // Atualmente mantido para testes de integração de banco de dados.
-        [Required]
-        public int UserId { get; set; }
     }
 
 }

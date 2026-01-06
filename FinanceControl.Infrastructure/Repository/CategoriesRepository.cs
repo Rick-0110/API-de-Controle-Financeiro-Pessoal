@@ -26,7 +26,7 @@ namespace FinanceControl.Infrastructure.Repositories
             return await _context.Categories.FindAsync(id);
         }
 
-        public async Task<List<Category>> GetAllCategoriesAsync()
+        public async Task<IEnumerable<Category>> GetAllByUserIdAsync(int userId)
         {
             return await _context.Categories.ToListAsync();
         }
