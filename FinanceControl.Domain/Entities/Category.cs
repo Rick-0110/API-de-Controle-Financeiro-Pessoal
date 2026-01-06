@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace FinanceControl.Domain.Entities
 {
@@ -6,12 +8,19 @@ namespace FinanceControl.Domain.Entities
     {
 
         public int Id { get; set; }
+
+        [MaxLength(50)]
+        [Required]
         public string Name { get; set; } = string.Empty;
+
+        [MaxLength(300)]
         public string Description { get; set; } = string.Empty;
 
+        [Required]
         public int UserId { get; set; }
 
         [JsonIgnore]
+        [ForeignKey("UserId")]
         public User? User { get; set; } = null!;
 
         public Category(string name, string description,int UserId)
