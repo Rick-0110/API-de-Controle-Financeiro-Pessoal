@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FinanceControl.Domain.Enums;
 using System.Text.Json.Serialization; 
 
 namespace FinanceControl.Domain.Entities
@@ -14,8 +14,7 @@ namespace FinanceControl.Domain.Entities
 
         public decimal Amount { get; private set; }
         public DateTime Date { get; private set; } = DateTime.Now;
-        public int Type { get; private set; }
-
+        public TransactionType Type { get; private set; }
         public int UserId { get;  set; }
 
         [JsonIgnore]
@@ -30,13 +29,13 @@ namespace FinanceControl.Domain.Entities
         {
             if(string.IsNullOrWhiteSpace(description)) throw new ArgumentException("A descrição é obrigatória!", nameof(description));
             if(amount <= 0 ) throw new ArgumentException("O valor da transação deve ser maior que zero!", nameof(amount));
-            if(UserId <= 0) throw new ArgumentException("Usuário inválido!", nameof(userId));
+            if(userId <= 0) throw new ArgumentException("Usuário inválido!", nameof(userId));
             if(categoryId <= 0) throw new ArgumentException("Categoria inválida!", nameof(categoryId));
 
             Description = description;
             Amount = amount;
             Date = date;
-            Type = (int)type;
+            Type = type;
             UserId = userId;
             CategoryId = categoryId;
 

@@ -5,9 +5,9 @@ namespace FinanceControl.Domain.Interfaces
     public interface ITransactionsRepository
     {
         Task<Transaction> CreateTransactionAsync(Transaction transaction);
-        Task<IEnumerable<Transaction>> GetAllAsync();
-        Task<Transaction?> GetByIdAsync(int id);
-        
 
+        Task<IEnumerable<Transaction>> GetByUserIdAsync(int userId);
+
+        Task<Transaction?> GetByIdAsync(int id);
     }
 }

@@ -1,51 +1,55 @@
-﻿using FinanceControl.Domain.Entities;
+﻿using FinanceControl.Application.Dtos;
+using FinanceControl.Domain.Entities;
+using FinanceControl.Domain.Enums;
 using FinanceControl.Domain.Interfaces;
-using FinanceControl.Application.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace API_de_Controle_Financeiro_Pessoal.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TransactionsController : ControllerBase
     {
         private readonly ITransactionsRepository _transactionsRepository;
         private readonly ICategoriesRepository _categoriesRepository;
-        private readonly IUserRepository _usersRepository; 
+     
 
         public TransactionsController(ITransactionsRepository transactionsRepository, ICategoriesRepository categoriesRepository, IUserRepository usersRepository)
         {
             _transactionsRepository = transactionsRepository;
             _categoriesRepository = categoriesRepository;
-            _usersRepository = usersRepository;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateTransaction([FromBody] CreateTransactionDto dto)
         {
 
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var user = await _usersRepository.GetByIdAsync(dto.UserId);
-            if (user == null)
+            if (string.IsNullOrEmpty(userIdString))
             {
-                return BadRequest("Usuário não encontrado.");
+                return Unauthorized("Token inválido ou sem ID.");
             }
+            int userId = int.Parse(userIdString);
 
             var category = await _categoriesRepository.GetCategoryById(dto.CategoryId);
+
             if (category == null)
             {
-                return BadRequest("Usuário não encontrado");
+                return BadRequest("Categoria não encontrada.");
             }
 
             var transaction = new Transaction(
-                dto.Description,
-                dto.Amount,
-                dto.Date,
-                (TransactionType)dto.Type,
-                dto.UserId,
-                dto.CategoryId
-
-                );
+                 dto.Description,
+                 dto.Amount,
+                 dto.Date,
+                 dto.Type, 
+                 userId,   
+                 dto.CategoryId
+             );
 
             await _transactionsRepository.CreateTransactionAsync(transaction);
 
@@ -62,24 +66,34 @@ namespace API_de_Controle_Financeiro_Pessoal.Controllers
                 CategoryName = category.Name
             };
 
-            return CreatedAtAction(nameof(GetById), new { id = transaction.Id }, response);
+            return CreatedAtAction(nameof(GetMyTransactions), new { id = transaction.Id }, response);
 
         }
+
 
         [HttpGet]
-        public async Task<IEnumerable<Transaction>> GetAllAsync()
+        public async Task<IActionResult> GetMyTransactions()
         {
-            return await _transactionsRepository.GetAllAsync();
-        }
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;    
+            if (string.IsNullOrEmpty(userIdString)) return Unauthorized();
+            int userId = int.Parse(userIdString);
 
+            var transactions = await _transactionsRepository.GetByUserIdAsync(userId);
 
+            var response = transactions.Select(t => new TransactionResponseDto
+            {
+                Id = t.Id,
+                Description = t.Description,
+                Amount = t.Amount,
+                Date = t.Date,
+                Type = (TransactionType)t.Type,
+                TypeName = t.Type.ToString(),
+                UserId = t.UserId,
+                CategoryId = t.CategoryId,
+                CategoryName = t.Category.Name
+            });
 
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            return Ok();
-
+            return Ok(response);
         }
     }
 }
