@@ -38,6 +38,20 @@ namespace FinanceControl.Infrastructure.Repositories
                 .FirstOrDefaultAsync(t => t.Id == id);
         }
 
-     
+        public async Task<Transaction> UpdateAsync(Transaction transaction)
+        {
+            _context.Transactions.Update(transaction);
+            await _context.SaveChangesAsync();
+            return transaction;
+        }
+
+        public async Task<Transaction> DeleteAsync(Transaction transaction)
+        {
+            _context.Transactions.Remove(transaction);
+            await _context.SaveChangesAsync();
+            return transaction;
+        }
+
+
     }
 }

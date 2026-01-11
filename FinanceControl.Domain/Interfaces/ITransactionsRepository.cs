@@ -8,6 +8,9 @@ namespace FinanceControl.Domain.Interfaces
 
         Task<IEnumerable<Transaction>> GetByUserIdAsync(int userId);
 
+        Task<Transaction> UpdateAsync(Transaction transaction);
+        Task<Transaction> DeleteAsync(Transaction transaction);
+
         Task<Transaction?> GetByIdAsync(int id);
     }
 }

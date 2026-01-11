@@ -41,6 +41,20 @@ namespace FinanceControl.Domain.Entities
 
         }
 
+
+        public void Update(string description, decimal amount, DateTime date, int categoryId, TransactionType type)
+        {
+            if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException("A descrição é obrigatória!", nameof(description));
+            if (amount <= 0) throw new ArgumentException("O valor deve ser maior que zero!", nameof(amount));
+            if (categoryId <= 0) throw new ArgumentException("Categoria inválida!", nameof(categoryId));
+
+            Description = description;
+            Amount = amount;
+            Date = date;
+            CategoryId = categoryId;
+            Type = type;
+        }
+
         protected Transaction() { }
 
 

@@ -86,15 +86,58 @@ namespace API_de_Controle_Financeiro_Pessoal.Controllers
                 Description = t.Description,
                 Amount = t.Amount,
                 Date = t.Date,
-                Type = (TransactionType)t.Type,
-                TypeName = t.Type.ToString(),
-                UserId = t.UserId,
+                Type = t.Type,
+                TypeName = t.Type.ToString(), 
                 CategoryId = t.CategoryId,
-                CategoryName = t.Category.Name
+                CategoryName = t.Category?.Name ?? "Sem Categoria"
             });
 
             return Ok(response);
         }
+
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] CreateTransactionDto dto)
+        {
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            int userId = int.Parse(userIdString!);
+
+            var transaction = await _transactionsRepository.GetByIdAsync(id);
+
+            if(transaction == null)
+            {
+                return NotFound("Transação não encontrada");
+            }
+
+            if(transaction.UserId != userId)
+            {
+                return Forbid("Você não tem permissão para atualizar esta transação.");
+            }
+
+            transaction.Update(dto.Description, dto.Amount, dto.Date, dto.CategoryId, dto.Type);
+
+            await _transactionsRepository.UpdateAsync(transaction);
+            return NoContent();
+
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            int userId = int.Parse(userIdString!);
+            var transaction = await _transactionsRepository.GetByIdAsync(id);
+            if (transaction == null)
+            {
+                return NotFound("Transação não encontrada");
+            }
+            if (transaction.UserId != userId)
+            {
+                return Forbid("Você não tem permissão para deletar esta transação.");
+            }
+            await _transactionsRepository.DeleteAsync(transaction);
+            return NoContent();
+        }   
 
 
         [HttpGet("dashboard")]
