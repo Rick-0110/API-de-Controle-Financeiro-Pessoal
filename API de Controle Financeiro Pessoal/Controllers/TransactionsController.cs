@@ -15,7 +15,7 @@ namespace API_de_Controle_Financeiro_Pessoal.Controllers
     {
         private readonly ITransactionsRepository _transactionsRepository;
         private readonly ICategoriesRepository _categoriesRepository;
-     
+
 
         public TransactionsController(ITransactionsRepository transactionsRepository, ICategoriesRepository categoriesRepository, IUserRepository usersRepository)
         {
@@ -46,8 +46,8 @@ namespace API_de_Controle_Financeiro_Pessoal.Controllers
                  dto.Description,
                  dto.Amount,
                  dto.Date,
-                 dto.Type, 
-                 userId,   
+                 dto.Type,
+                 userId,
                  dto.CategoryId
              );
 
@@ -74,7 +74,7 @@ namespace API_de_Controle_Financeiro_Pessoal.Controllers
         [HttpGet]
         public async Task<IActionResult> GetMyTransactions()
         {
-            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;    
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userIdString)) return Unauthorized();
             int userId = int.Parse(userIdString);
 
@@ -94,6 +94,35 @@ namespace API_de_Controle_Financeiro_Pessoal.Controllers
             });
 
             return Ok(response);
+        }
+
+
+        [HttpGet("dashboard")]
+        public async Task<IActionResult> GetDashboard()
+        {
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdString)) return Unauthorized();
+            int userId = int.Parse(userIdString);
+
+            var transactions = await _transactionsRepository.GetByUserIdAsync(userId);
+
+            var totalIncome = transactions
+                .Where(t => t.Type == TransactionType.Income)
+                .Sum(t => t.Amount);
+
+
+            var totalExpense = transactions
+                .Where(t => t.Type == TransactionType.Expense)
+                .Sum(t => t.Amount);
+
+
+            var dashboard = new DashboardDto
+            {
+                TotalIncome = totalIncome,
+                TotalExpenses = totalExpense
+            };
+
+            return Ok(dashboard);
         }
     }
 }

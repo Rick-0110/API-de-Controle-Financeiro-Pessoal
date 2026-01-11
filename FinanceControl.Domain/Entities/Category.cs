@@ -32,6 +32,13 @@ namespace FinanceControl.Domain.Entities
             this.UserId = UserId;
         }
 
+        public void Update(string name, string description)
+        {
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("O nome da categoria é obrigatório!", nameof(name));
+            this.Name = name;
+            this.Description = description;
+        }
+
         protected Category()
         {
         }
