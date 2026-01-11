@@ -1,4 +1,4 @@
-﻿using FinanceControl.Domain.Entities;
+﻿using FinanceControl.Domain.Enums;
 
 namespace FinanceControl.Application.Dtos
 {

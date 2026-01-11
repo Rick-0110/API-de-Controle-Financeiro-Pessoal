@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using FinanceControl.Domain.Entities;
+using FinanceControl.Domain.Enums;
 
 namespace FinanceControl.Application.Dtos
 {
@@ -19,10 +19,6 @@ namespace FinanceControl.Application.Dtos
         public TransactionType Type { get; set; }
 
         [Required]
-        public int UserId { get; set; }
-
-        [Required]
         public int CategoryId { get; set; }
-
     }
 }

@@ -21,10 +21,13 @@ namespace FinanceControl.Infrastructure.Repositories
         }
 
 
-        public async Task<IEnumerable<Transaction>> GetAllAsync()
+        public async Task<IEnumerable<Transaction>> GetByUserIdAsync(int userId)
         {
             return await _context.Transactions
-                .Include(t => t.Category)
+                .AsNoTracking() 
+                .Where(t => t.UserId == userId) 
+                .Include(t => t.Category)       
+                .OrderByDescending(t => t.Date) 
                 .ToListAsync();
         }
 

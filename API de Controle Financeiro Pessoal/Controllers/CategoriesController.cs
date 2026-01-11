@@ -15,43 +15,51 @@ namespace API_de_Controle_Financeiro_Pessoal.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoriesRepository _categoriesRepository;
-        private readonly IUserRepository _userRepository;
+
         public CategoriesController(ICategoriesRepository categoriesRepository, IUserRepository userRepository)
         {
             _categoriesRepository = categoriesRepository;
-            _userRepository = userRepository;
+          
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateCategory([FromBody]CreateCategoryDto dto)
         {
-            var userId = GetUserId();
+          var userId = GetUserId(); 
 
             var category = new Category(dto.Name, dto.Description, userId);
 
             await _categoriesRepository.CreateCategoryAsync(category);
-            return CreatedAtAction(nameof(GetCategoryById), new { id = category.Id }, category);
+
+            var response = new CategoryResponseDto
+            {
+                Id = category.Id,
+                Name = category.Name,
+                Description = category.Description,
+                UserId = category.UserId
+            };  
+
+            return CreatedAtAction(nameof(GetCategoryById), new { id = category.Id }, response);
         }
 
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategoryById(int id)
         {
+            var userId = GetUserId();   
             var category = await _categoriesRepository.GetCategoryById(id);
-
-            if(category == null)
+            if(category == null || category.UserId != userId)
             {
-             return NotFound();
+                return NotFound();
             }
-
-            var userId = GetUserId();
-
-            if(category.UserId != userId)
+            var response = new CategoryResponseDto
             {
-            return Forbid();
-            }
-
-            return Ok(category);
+                Id = category.Id,
+                Name = category.Name,
+                Description = category.Description,
+                UserId = category.UserId
+            };
+            return Ok(response);
         }   
 
         [HttpGet]
@@ -71,17 +79,24 @@ namespace API_de_Controle_Financeiro_Pessoal.Controllers
             return Ok(response);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(int id, Category category)
         {
-            var userId = GetUserId();
+            var userId = GetUserId();   
 
-            var updatedCategory = await _categoriesRepository.UpdateCategoryAsync(id, category);
-            if(updatedCategory == null)
+            var existingCategory = await _categoriesRepository.GetCategoryById(id);
+
+            if (existingCategory == null || existingCategory.UserId != userId)
             {
                 return NotFound();
             }
-            return Ok(updatedCategory);
+
+
+            existingCategory.Name = category.Name;
+
+            await _categoriesRepository.UpdateCategoryAsync(id, existingCategory);
+
+            return NoContent();
         }
 
         [HttpDelete]
@@ -89,17 +104,27 @@ namespace API_de_Controle_Financeiro_Pessoal.Controllers
         {
             var userId = GetUserId();
 
-            var deletedCategory = await _categoriesRepository.DeleteCategoryAsync(id);
-            if(deletedCategory == null)
+           var existingCategory = await _categoriesRepository.GetCategoryById(id);
+          
+            if(existingCategory == null)
             {
-                return NotFound();
+                return NotFound("Categoria não encontrada");
             }
+
+            if(existingCategory.UserId != userId)
+            {
+                return Forbid("Você não tem permissão para deletar esta categoria.");
+            }
+
+            await _categoriesRepository.DeleteCategoryAsync(id);
+
             return NoContent();
         }
 
         private int GetUserId()
         {
             var idClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(idClaim)) throw new Exception("Token inválido");
             return int.Parse(idClaim);
         }
 
